@@ -15,10 +15,11 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->integer('driver_id')->references('id')->on('drivers')->onDelete('cascade');
+            $table->integer('passenger_id')->references('id')->on('passengers')->onDelete('cascade');
+            $table->string('username');
             $table->string('password');
-            $table->rememberToken();
+            $table->text('token_auth')->nullable();
             $table->timestamps();
         });
     }
