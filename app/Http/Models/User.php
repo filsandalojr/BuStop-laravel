@@ -27,4 +27,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'token_auth',
     ];
+
+    public function passenger()
+    {
+        return $this->hasOne(Passenger::class, 'id', 'passenger_id');
+    }
+
+    public function driver()
+    {
+        return $this->hasOne(Driver::class, 'id', 'driver_id');
+    }
 }

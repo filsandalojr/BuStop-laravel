@@ -84,7 +84,8 @@ class AuthController extends Controller
         return response()->json(['success' => true,  'token' => $token ]);
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         $this->validate($request, ['token' => 'required']);
         try {
             JWTAuth::invalidate($request->input('token'));
@@ -93,6 +94,33 @@ class AuthController extends Controller
             // something went wrong whilst attempting to encode the token
             return response()->json(['success' => false, 'error' => 'Failed to logout, please try again.'], 500);
         }
+    }
+
+    public function user()
+    {
+        try {
+
+            if (! $user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['user_not_found'], 404);
+            }
+
+        } catch (Exception $e) {
+
+            return response()->json(['token_expired'], 404);
+
+        } catch (Exception $e) {
+
+            return response()->json(['token_invalid'], 404);
+
+        } catch (Exception $e) {
+
+            return response()->json(['token_absent'], 404);
+
+        }
+        $user->passenger;
+        $user->driver;
+        return response()->json(compact('user'));
+
     }
 
 }
