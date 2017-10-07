@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Models\Destination;
+use App\Http\Models\User;
 use App\Http\Models\BusTrip;
+use App\Http\Models\Driver;
 use Illuminate\Http\Request;
 
 class BusTripController extends Controller
@@ -17,69 +20,38 @@ class BusTripController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getDestination()
     {
-        //
+        $destination = Destination::get();
+
+        return response()->json($destination);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function newTrip($id, Request $request)
     {
-        //
+        $value = $request->all();
+
+        $user = User::with(
+            [
+                'driver' => function($q) {
+                    $q->with('bus');
+                }
+            ]
+        );
+        $user = $user->find($id);
+
+        $busTrip = new BusTrip();
+        $busTrip->bus_id = $user->driver->bus['id'];
+        $busTrip->destination_id = $value['destination'];
+        $busTrip->location_lat = '10.298383';
+        $busTrip->location_long = '123.893305';
+        $busTrip->save();
+
+        return response()->json($user);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\BusTrip  $busTrip
-     * @return \Illuminate\Http\Response
-     */
-    public function show(BusTrip $busTrip)
+    public function searchTrips(Request $request)
     {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\BusTrip  $busTrip
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(BusTrip $busTrip)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\BusTrip  $busTrip
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, BusTrip $busTrip)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\BusTrip  $busTrip
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(BusTrip $busTrip)
-    {
-        //
     }
 }

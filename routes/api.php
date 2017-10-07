@@ -15,6 +15,10 @@ use Illuminate\Http\Request;
 Route::post('register', 'AuthController@register');
 Route::post('login', 'AuthController@login');
 Route::group(['middleware' => ['jwt.auth']], function() {
-    Route::get('logout', 'AuthController@logout');
+    Route::post('logout', 'AuthController@logout');
     Route::get('/authenticate/user', 'AuthController@user');
+    Route::group(['prefix' => 'bus/{id}'] ,function() {
+        Route::get('destinations', 'BusTripController@getDestination');
+        Route::post('newTrip', 'BusTripController@newTrip');
+    });
 });
