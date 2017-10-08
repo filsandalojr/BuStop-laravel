@@ -2,84 +2,61 @@
 
 namespace App\Http\Controllers;
 
+use Hash;
+use App\Http\Models\Bus;
 use App\Http\Models\Driver;
+use App\Http\Models\Company;
+use App\Http\Models\User;
 use Illuminate\Http\Request;
+use Symfony\Component\Yaml\Tests\B;
 
 class DriverController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getDetails()
     {
-        //
+        return response()->json(Company::all());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function registerDriver(Request $request)
     {
-        //
-    }
+        $value = $request->all();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Driver  $driver
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Driver $driver)
-    {
-        //
-    }
+        $company = Company::find($value['company']);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Driver  $driver
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Driver $driver)
-    {
-        //
-    }
+        $driverData = [
+            'company_id' => $value['company'],
+            'name' => $value['driver_name'],
+            'age' => $value['driver_age'],
+            'address' => $value['driver_address'],
+            'rating' => 0
+        ];
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Driver  $driver
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Driver $driver)
-    {
-        //
-    }
+        $busData = [
+            'company_id' => $value['company'],
+            'name' =>$company['name'],
+            'bus_number' => $value['bus_number'],
+            'capacity' => $value['capacity'],
+            'type' => $value['bus_type'],
+            'rating' => 0
+        ];
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Driver  $driver
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Driver $driver)
-    {
-        //
+
+
+        $driver = Driver::create($driverData);
+        $bus = new Bus($busData);
+        $driver->bus()->save($bus);
+
+        $user = new User();
+        $user->driver_id = $driver->id;
+        $user->username = $value['username'];
+        $user->password = Hash::make($value['password']);
+        $user->save();
+
+        return response()->json(['response' => 'success']);
     }
 }

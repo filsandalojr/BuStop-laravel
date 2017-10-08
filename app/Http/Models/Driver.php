@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Driver extends Model
 {
     protected $table = 'drivers';
+    protected $fillable = ['company_id', 'name', 'age', 'address', 'rating'];
     //
 
     public function user() {
-        return $this->belongsTo(User::class, 'id', 'driver_id');
+        return $this->hasOne(User::class);
     }
 
     public function bus() {
-        return $this->belongsTo(Bus::class, 'id', 'driver_id');
+        return $this->hasOne(Bus::class);
     }
 }

@@ -12,8 +12,10 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('register', 'AuthController@register');
+Route::post('registerUser', 'PassengerController@registerUser');
 Route::post('login', 'AuthController@login');
+Route::get('getCompanies', 'DriverController@getDetails');
+Route::post('registerDriver', 'DriverController@registerDriver');
 Route::group(['middleware' => ['jwt.auth']], function() {
     Route::post('logout', 'AuthController@logout');
     Route::get('/authenticate/user', 'AuthController@user');

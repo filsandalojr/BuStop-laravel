@@ -30,11 +30,11 @@ class User extends Authenticatable
 
     public function passenger()
     {
-        return $this->hasOne(Passenger::class, 'id', 'passenger_id');
+        return $this->belongsTo(Passenger::class, 'passenger_id', 'id');
     }
 
     public function driver()
     {
-        return $this->hasOne(Driver::class, 'id', 'driver_id');
+        return $this->belongsTo(Driver::class, 'driver_id', 'id');
     }
 }

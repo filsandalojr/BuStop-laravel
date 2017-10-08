@@ -16,7 +16,7 @@ class UsersSeeder extends Seeder
             [
                 'data' => [
                     'username' => 'driver01',
-                    'password' => '$2y$10$TBsFHKHiANV.uodZ0VjZ4exGO1m33kY599AVF1UNJeZKC4OAHOWcy',
+                    'password' => Hash::make('password'),
                     'driver_id' => 1,
                     'passenger_id' => 0
                 ]
@@ -24,7 +24,7 @@ class UsersSeeder extends Seeder
             [
                 'data' => [
                     'username' => 'passenger01',
-                    'password' => '$2y$10$TBsFHKHiANV.uodZ0VjZ4exGO1m33kY599AVF1UNJeZKC4OAHOWcy',
+                    'password' =>  Hash::make('password'),
                     'driver_id' => 0,
                     'passenger_id' => 1
                 ]
