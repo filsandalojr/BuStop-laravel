@@ -16,8 +16,8 @@ class CreateBusTripTable extends Migration
             $table->increments('id')->unsigned();
             $table->integer('bus_id')->references('id')->on('bus')->onDelete('cascade');
             $table->integer('destination_id')->references('id')->on('destination')->onDelete('cascade');
-            $table->float('location_lat');
-            $table->float('location_long');
+            $table->string('location_lat');
+            $table->string('location_long');
             $table->timestamps();
         });
     }

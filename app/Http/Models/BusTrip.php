@@ -8,4 +8,9 @@ class BusTrip extends Model
 {
     protected $table = 'bus_trip';
     //
+
+    public function bus()
+    {
+        return $this->belongsTo(Bus::class,'bus_id','id');
+    }
 }

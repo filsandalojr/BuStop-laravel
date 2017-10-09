@@ -12,4 +12,8 @@ class Bus extends Model
     public function busDriver() {
         return $this->belongsTo(Driver::class);
     }
+
+    public function busTrip() {
+        return $this->hasOne(BusTrip::class);
+    }
 }
