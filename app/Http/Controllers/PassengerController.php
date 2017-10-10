@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Bus;
 use App\Http\Models\BusTrip;
+use App\Http\Models\Company;
 use App\Http\Models\Destination;
+use App\Http\Models\PassengerBooking;
 use Hash;
 use App\Http\Models\Passenger;
 use App\Http\Models\User;
@@ -38,7 +40,7 @@ class PassengerController extends Controller
 
     public function initSearch()
     {
-        $bus = Bus::all();
+        $bus = Company::all();
         $destination = Destination::all();
 
         $data = [
@@ -73,9 +75,28 @@ class PassengerController extends Controller
         return response()->json($trips);
     }
 
-    public function bookTrip(Request $request)
+    public function bookTrip($id, Request $request)
     {
+        $value = $request->all();
 
+        $busTrip = BusTrip::find($value['trip']);
+        $busTrip->available_seats = $busTrip->available_seats - 1;
+        $busTrip->update();
+
+        $passengerTrip = [
+            'passenger_id' => $id,
+            'bus_id' => $value['bus'],
+            'location_lat' => $value['location_lat'],
+            'location_long' => $value['location_long'],
+            'upper' => $value['upper'],
+            'upper_color' => $value['upper_color'],
+            'lower' => $value['lower'],
+            'lower_color' => $value['lower_color'],
+            'landmark' => $value['landmark']
+        ];
+
+        $trip = PassengerBooking::create($passengerTrip);
+        return response()->json($passengerTrip);
     }
 
 }

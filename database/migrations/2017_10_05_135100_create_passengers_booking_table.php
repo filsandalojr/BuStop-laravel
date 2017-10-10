@@ -16,8 +16,12 @@ class CreatePassengersBookingTable extends Migration
             $table->increments('id')->unsigned();
             $table->integer('bus_id')->references('id')->on('bus')->onDelete('cascade');
             $table->integer('passenger_id')->references('id')->on('passengers')->onDelete('cascade');
-            $table->float('location_lat');
-            $table->float('location_long');
+            $table->string('location_lat');
+            $table->string('location_long');
+            $table->string('upper');
+            $table->string('upper_color');
+            $table->string('lower');
+            $table->string('lower_color');
             $table->string('landmark');
             $table->timestamps();
         });

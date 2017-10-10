@@ -45,6 +45,7 @@ class BusTripController extends Controller
         $busTrip->destination_id = $value['destination'];
         $busTrip->location_lat = '10.298383';
         $busTrip->location_long = '123.893305';
+        $busTrip->available_seats = $user->driver->bus['capacity'];
         $busTrip->save();
 
         return response()->json($user);
