@@ -78,14 +78,15 @@ class PassengerController extends Controller
     public function bookTrip($id, Request $request)
     {
         $value = $request->all();
+        $user = User::find($id);
 
         $busTrip = BusTrip::find($value['trip']);
         $busTrip->available_seats = $busTrip->available_seats - 1;
         $busTrip->update();
 
         $passengerTrip = [
-            'passenger_id' => $id,
-            'bus_id' => $value['bus'],
+            'bus_trip_id' => $value['trip'],
+            'passenger_id' => $user->passenger_id,
             'location_lat' => $value['location_lat'],
             'location_long' => $value['location_long'],
             'upper' => $value['upper'],
@@ -96,7 +97,24 @@ class PassengerController extends Controller
         ];
 
         $trip = PassengerBooking::create($passengerTrip);
-        return response()->json($passengerTrip);
+        return response()->json($trip);
+    }
+
+    public function getBooking($id, $tripId)
+    {
+        $busTrip = BusTrip::with('bus')->find($tripId);
+
+        return response()->json($busTrip);
+    }
+
+    public function cancelBooking($id)
+    {
+        $user = User::find($id);
+
+        $trip = PassengerBooking::where('passenger_id', $user->passenger_id)->first();
+
+        $trip->delete();
+        return response()->json('success');
     }
 
 }

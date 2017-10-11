@@ -27,5 +27,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
         Route::get('initSearch', 'PassengerController@initSearch');
         Route::post('searchTrip', 'PassengerController@searchTrip');
         Route::post('bookTrip', 'PassengerController@bookTrip');
+        Route::get('getBooking/{tripId}', 'PassengerController@getBooking');
+        Route::get('cancelBooking', 'PassengerController@cancelBooking');
     });
 });

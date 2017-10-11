@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Models\Bus;
+use App\Http\Models\BusTrip;
+use App\Http\Models\PassengerBooking;
 use Illuminate\Http\Request;
 use App\Http\Models\User;
 use JWTAuth;
@@ -119,7 +122,29 @@ class AuthController extends Controller
         }
         $user->passenger;
         $user->driver;
-        return response()->json(compact('user'));
+        $hasTrip = false;
+        $tripId = 0;
+        if ($user->passenger_id != 0) {
+            $trip = PassengerBooking::where('passenger_id', $user->passenger_id)->first();
+            if ($trip) {
+                $hasTrip = true;
+                $tripId = $trip->bus_trip_id;
+            }
+        } elseif ($user->driver_id != 0) {
+
+            $bus = Bus::where('driver_id', $user->driver_id)->with('busTrip')->get();
+
+            if ($bus[0]->busTrip) {
+                $hasTrip = true;
+            }
+        }
+        $response = [
+            'user' => $user,
+            'hasTrip' => $hasTrip,
+            'tripId' => $tripId
+        ];
+
+        return response()->json($response);
 
     }
 

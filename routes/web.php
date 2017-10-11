@@ -12,5 +12,8 @@
 */
 
 Route::get('/', function () {
+
     return view('welcome');
 });
+
+Route::get('/emulate', 'BusController@illustrationChangingOfLocation');

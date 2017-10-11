@@ -14,7 +14,7 @@ class CreatePassengersBookingTable extends Migration
     {
         Schema::create('passengers_booking', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->integer('bus_id')->references('id')->on('bus')->onDelete('cascade');
+            $table->integer('bus_trip_id')->references('id')->on('bus_trip')->onDelete('cascade');
             $table->integer('passenger_id')->references('id')->on('passengers')->onDelete('cascade');
             $table->string('location_lat');
             $table->string('location_long');
