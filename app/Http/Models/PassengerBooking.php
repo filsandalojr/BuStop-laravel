@@ -8,4 +8,5 @@ class PassengerBooking extends Model
 {
     protected $table = 'passengers_booking';
     protected $fillable = ['passenger_id', 'bus_trip_id', 'location_lat', 'location_long', 'upper', 'upper_color', 'lower', 'lower_color', 'landmark'];
+
 }

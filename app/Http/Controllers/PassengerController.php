@@ -80,10 +80,6 @@ class PassengerController extends Controller
         $value = $request->all();
         $user = User::find($id);
 
-        $busTrip = BusTrip::find($value['trip']);
-        $busTrip->available_seats = $busTrip->available_seats - 1;
-        $busTrip->update();
-
         $passengerTrip = [
             'bus_trip_id' => $value['trip'],
             'passenger_id' => $user->passenger_id,

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Models\Bus;
 use App\Http\Models\Destination;
+use App\Http\Models\PassengerBooking;
 use App\Http\Models\User;
 use App\Http\Models\BusTrip;
 use App\Http\Models\Driver;
@@ -56,5 +58,36 @@ class BusTripController extends Controller
     public function searchTrips(Request $request)
     {
 
+    }
+
+    public function getPassengers($id, $tripId)
+    {
+        $passengers = PassengerBooking::where('bus_trip_id', $tripId)->get();
+        $bustrip = BusTrip::find($tripId);
+        $response = [
+            'passenger' => $passengers,
+            'available_seats' => $bustrip->available_seats
+        ];
+        return response()->json($response);
+    }
+
+    public function arrived(Request $request)
+    {
+        $value = $request->all();
+
+        $trip = BusTrip::destroy($value['tripId']);
+        return response()->json($trip);
+
+    }
+
+    public function boarded(Request $request)
+    {
+        $value = $request->all();
+
+        $trip = BusTrip::find($value['tripId']);
+        $trip->available_seats = $trip->available_seats - 1;
+        $trip->save();
+
+        return response()->json($trip);
     }
 }

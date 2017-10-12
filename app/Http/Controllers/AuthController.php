@@ -136,6 +136,7 @@ class AuthController extends Controller
 
             if ($bus[0]->busTrip) {
                 $hasTrip = true;
+                $tripId = $bus[0]->busTrip['id'];
             }
         }
         $response = [

@@ -22,6 +22,9 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::group(['prefix' => 'bus/{id}'] ,function() {
         Route::get('destinations', 'BusTripController@getDestination');
         Route::post('newTrip', 'BusTripController@newTrip');
+        Route::get('getPassengers/{tripId}', 'BusTripController@getPassengers');
+        Route::post('arrived', 'BusTripController@arrived');
+        Route::post('boarded', 'BusTripController@boarded');
     });
     Route::group(['prefix' => 'passenger/{id}'] ,function() {
         Route::get('initSearch', 'PassengerController@initSearch');
